@@ -1,15 +1,14 @@
-import React from "react";
+import { ChangeEvent } from "react";
 import styled from "styled-components";
 
-type Props = {
+type InputProps = {
   placeholder: string;
   value: string;
   onChange: (v: string) => void;
 };
 
-const Input = ({ value, onChange, placeholder }: Props) => {
-  // FIXME `any` is not perfect
-  const handleChange = (e: any) => {
+const Input = ({ value, onChange, placeholder }: InputProps) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
   };
   return (
