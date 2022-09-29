@@ -4,28 +4,31 @@ import styled from "styled-components";
 import Input from "./Input";
 import Loader from "./components/loader/loader";
 import Dropdown from "./components/dropdown/dropdown";
+import NotifTable from "components/table/NotifTable";
+
+import type { Notif } from "utils/types.utils";
 
 const API = "http://localhost:5000";
 
-type Notif = {
-  id: number;
-  type: string;
-  data: AccountCreationNotifData | TransactionNotifData;
-};
+// type Notif = {
+//   id: number;
+//   type: string;
+//   data: AccountCreationNotifData | TransactionNotifData;
+// };
 
-type AccountCreationNotifData = {
-  id: number;
-  currency: string;
-  name: string;
-};
+// type AccountCreationNotifData = {
+//   id: number;
+//   currency: string;
+//   name: string;
+// };
 
-type TransactionNotifData = {
-  id: number;
-  amount: number;
-  from: string;
-  to: string;
-  unit: string;
-};
+// type TransactionNotifData = {
+//   id: number;
+//   amount: number;
+//   from: string;
+//   to: string;
+//   unit: string;
+// };
 
 const NOTIFICATIONS_TYPES = {
   received_tx: "TRANSACTION_RECEIVED",
@@ -70,16 +73,10 @@ const App = () => {
 
   return (
     <Container>
-      <Input
-        value={searchText}
-        onChange={setSearchText}
-        placeholder="Type to filter events"
-      />
+      <Input value={searchText} onChange={setSearchText} placeholder="Type to filter events" />
       <Button onClick={onReceivedTxButtonClickHandler}>Received Tx</Button>
       <Button onClick={onSentTxButtonClickHandler}>Sent Tx</Button>
-      <Button onClick={onCreatedAccountButtonClickHandler}>
-        Account created
-      </Button>
+      <Button onClick={onCreatedAccountButtonClickHandler}>Account created</Button>
 
       <Dropdown></Dropdown>
       {isLoading ? (
