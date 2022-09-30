@@ -72,9 +72,11 @@ const App = () => {
   return (
     <Container>
       <Input value={searchText} onChange={setSearchText} placeholder="Type to filter events" />
-      <Button onClick={onReceivedTxButtonClickHandler}>Received Tx</Button>
-      <Button onClick={onSentTxButtonClickHandler}>Sent Tx</Button>
-      <Button onClick={onCreatedAccountButtonClickHandler}>Account created</Button>
+      <ButtonContainer>
+        <Button onClick={onReceivedTxButtonClickHandler}>Received Tx</Button>
+        <Button onClick={onSentTxButtonClickHandler}>Sent Tx</Button>
+        <Button onClick={onCreatedAccountButtonClickHandler}>Account created</Button>
+      </ButtonContainer>
 
       <Dropdown></Dropdown>
       {/* {isLoading ? (
@@ -106,7 +108,14 @@ const App = () => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 20px;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 `;
 
 const Button = styled.button`

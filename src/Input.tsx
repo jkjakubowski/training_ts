@@ -12,12 +12,7 @@ const Input = ({ value, onChange, placeholder }: InputProps) => {
     onChange(e.target.value);
   };
   return (
-    <StyledInput
-      type="text"
-      value={value}
-      onChange={handleChange}
-      placeholder={placeholder}
-    />
+    <StyledInput type="search" value={value} onChange={handleChange} placeholder={placeholder} />
   );
 };
 
@@ -25,6 +20,7 @@ const StyledInput = styled.input`
   padding: 8px;
   border: 1px solid hsl(0, 0%, 10%);
   border-radius: 4px;
+  min-width: 250px;
 `;
 
 export default Input;
