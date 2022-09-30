@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import Input from "./Input";
-import Loader from "./components/loader/loader";
 import Dropdown from "./components/dropdown/dropdown";
-import NotifTable from "components/table/NotifTable";
+import NotifTable from "./components/table/NotifTable";
+import { NOTIFICATIONS_TYPES } from "./utils/data.utils";
 
 import type { Notif } from "utils/types.utils";
 
@@ -30,27 +30,22 @@ const API = "http://localhost:5000";
 //   unit: string;
 // };
 
-const NOTIFICATIONS_TYPES = {
-  received_tx: "TRANSACTION_RECEIVED",
-  sent_tx: "TRANSACTION_SENT",
-  created_account: "ACCOUNT_CREATED",
-};
-
 const App = () => {
   const [searchText, setSearchText] = useState("");
   const [isLoading, setLoading] = useState(false);
   const [results, setResults] = useState<null | Notif[]>(null);
+  const [transactionNotifications, setTransactionNotifications] = useState(null);
 
-  const onReceivedTxButtonClickHandler = () => {
-    setSearchText(NOTIFICATIONS_TYPES.received_tx);
+  const onReceivedTxButtonClickHandler = async () => {
+    await setSearchText(NOTIFICATIONS_TYPES.TRANSACTION_RECEIVED);
   };
 
   const onSentTxButtonClickHandler = () => {
-    setSearchText(NOTIFICATIONS_TYPES.sent_tx);
+    setSearchText(NOTIFICATIONS_TYPES.TRANSACTION_SENT);
   };
 
   const onCreatedAccountButtonClickHandler = () => {
-    setSearchText(NOTIFICATIONS_TYPES.created_account);
+    setSearchText(NOTIFICATIONS_TYPES.ACCOUNT_CREATED);
   };
 
   useEffect(() => {
@@ -59,7 +54,11 @@ const App = () => {
       try {
         const res = await fetch(`${API}/search?q=${searchText}`);
         const data = await res.json();
-        setResults(data);
+        setTransactionNotifications(
+          data.filter(
+            (notif) => notif.type === "TRANSACTION_RECEIVED" || notif.type === "TRANSACTION_SENT",
+          ),
+        );
         setLoading(false);
       } catch (error) {
         console.log(error);
@@ -68,7 +67,6 @@ const App = () => {
     fetchNotifications();
   }, [searchText, setResults]);
 
-  console.log(results);
   console.log(isLoading);
 
   return (
@@ -79,18 +77,28 @@ const App = () => {
       <Button onClick={onCreatedAccountButtonClickHandler}>Account created</Button>
 
       <Dropdown></Dropdown>
-      {isLoading ? (
+      {/* {isLoading ? (
         <Loader />
-      ) : results?.length > 0 ? (
+      ) : transactionNotifications?.length > 0 ? (
         <div>
-          {results.map((r) => (
-            // TODO we must finalize this integration!! not very pretty like this
+          {transactionNotifications.map((r) => (
             <Item>{JSON.stringify(r)}</Item>
           ))}
+          <NotifTable notifs={transactionNotifications}></NotifTable>
         </div>
       ) : (
         <p>{"No results found :("}</p>
-      )}
+      )} */}
+      {/* {transactionNotifications ? ( */}
+      <div>
+        {/* {transactionNotifications.map((r) => (
+            <Item>{JSON.stringify(r)}</Item>
+          ))} */}
+        <NotifTable notifs={transactionNotifications}></NotifTable>
+      </div>
+      {/* ) : ( */}
+      {/* <p>{"No results found :("}</p>
+      )} */}
     </Container>
   );
 };
@@ -99,10 +107,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-`;
-
-const Item = styled.div`
-  border: 2px dashed red;
 `;
 
 const Button = styled.button`
