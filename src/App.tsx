@@ -36,16 +36,22 @@ const App = () => {
   const [results, setResults] = useState<null | Notif[]>(null);
   const [transactionNotifications, setTransactionNotifications] = useState(null);
 
-  const onReceivedTxButtonClickHandler = async () => {
-    await setSearchText(NOTIFICATIONS_TYPES.TRANSACTION_RECEIVED);
-  };
+  const { TRANSACTION_RECEIVED, TRANSACTION_SENT, ACCOUNT_CREATED } = NOTIFICATIONS_TYPES;
 
-  const onSentTxButtonClickHandler = () => {
-    setSearchText(NOTIFICATIONS_TYPES.TRANSACTION_SENT);
-  };
+  const onShortcutClickHandler = (type: string) => {
+    switch (type) {
+      case TRANSACTION_RECEIVED:
+        setSearchText(TRANSACTION_RECEIVED);
+        break;
 
-  const onCreatedAccountButtonClickHandler = () => {
-    setSearchText(NOTIFICATIONS_TYPES.ACCOUNT_CREATED);
+      case TRANSACTION_SENT:
+        setSearchText(TRANSACTION_SENT);
+        break;
+
+      case ACCOUNT_CREATED:
+        setSearchText(ACCOUNT_CREATED);
+        break;
+    }
   };
 
   useEffect(() => {
@@ -73,9 +79,9 @@ const App = () => {
     <Container>
       <Input value={searchText} onChange={setSearchText} placeholder="Type to filter events" />
       <ButtonContainer>
-        <Button onClick={onReceivedTxButtonClickHandler}>Received Tx</Button>
-        <Button onClick={onSentTxButtonClickHandler}>Sent Tx</Button>
-        <Button onClick={onCreatedAccountButtonClickHandler}>Account created</Button>
+        <Button onClick={() => onShortcutClickHandler(TRANSACTION_RECEIVED)}>Received Tx</Button>
+        <Button onClick={() => onShortcutClickHandler(TRANSACTION_SENT)}>Sent Tx</Button>
+        <Button onClick={() => onShortcutClickHandler(ACCOUNT_CREATED)}>Account created</Button>
       </ButtonContainer>
 
       <Dropdown></Dropdown>
