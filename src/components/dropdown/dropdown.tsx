@@ -9,7 +9,7 @@ const Dropdown = ({ values, onChildClickHandler }: { values: string[] }) => {
   };
 
   return (
-    <>
+    <DropdownContainer>
       <StyledDiv onClick={onDropdownClickHandler}>
         <div>Filter by currency</div>
         <Chevron>▾</Chevron>
@@ -18,14 +18,18 @@ const Dropdown = ({ values, onChildClickHandler }: { values: string[] }) => {
       {isOpen &&
         values.map((value) => {
           return (
-            <Child key={value}>
-              <button onClick={() => onChildClickHandler(value)}> {value}</button>
+            <Child key={value} onClick={() => onChildClickHandler(value)}>
+              {value}
             </Child>
           );
         })}
-    </>
+    </DropdownContainer>
   );
 };
+
+const DropdownContainer = styled.div`
+  margin-bottom: 1rem;
+`;
 
 const StyledDiv = styled.div`
   padding: 10px;
@@ -34,7 +38,7 @@ const StyledDiv = styled.div`
   display: flex;
   max-width: 180px;
   border-radius: 8px;
-  margin-bottom: 1rem;
+  margin-bottom: 0.2rem;
 `;
 
 const Child = styled.div`
@@ -43,6 +47,10 @@ const Child = styled.div`
   opacity: 1;
   background: pink;
   max-width: 100px;
+  cursor: pointer;
+  &:hover {
+    background: #f3758a;
+  }
 `;
 
 const Chevron = styled.div`
