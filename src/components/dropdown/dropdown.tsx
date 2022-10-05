@@ -15,20 +15,24 @@ const Dropdown = ({ values, onChildClickHandler }: { values: string[] }) => {
         <Chevron>▾</Chevron>
       </StyledDiv>
 
-      {isOpen &&
-        values.map((value) => {
-          return (
-            <Child key={value} onClick={() => onChildClickHandler(value)}>
-              {value}
-            </Child>
-          );
-        })}
+      {isOpen && (
+        <ChildContainer>
+          {values.map((value) => {
+            return (
+              <Child key={value} onClick={() => onChildClickHandler(value)}>
+                {value}
+              </Child>
+            );
+          })}
+        </ChildContainer>
+      )}
     </DropdownContainer>
   );
 };
 
 const DropdownContainer = styled.div`
   margin-bottom: 1rem;
+  width: 180px;
 `;
 
 const StyledDiv = styled.div`
@@ -42,15 +46,21 @@ const StyledDiv = styled.div`
 `;
 
 const Child = styled.div`
-  transition: scale ease-in-out 0.1s, opacity ease-in-out 0.1s, transform 2s;
   scale: 0.95;
   opacity: 1;
-  background: pink;
-  max-width: 100px;
+  width: 100%;
   cursor: pointer;
+  padding-left: 10px;
   &:hover {
-    background: #f3758a;
+    background: #d3dcfc9f;
   }
+`;
+
+const ChildContainer = styled.div`
+  transition: all ease-in-out 0.1s, opacity ease-in-out 0.1s, transform 2s;
+  border: 1px solid #bfbfbf;
+  border-radius: 8px;
+  padding: 10px 0px;
 `;
 
 const Chevron = styled.div`
