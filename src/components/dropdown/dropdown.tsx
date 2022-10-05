@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-const Dropdown = () => {
+const Dropdown = ({ values, onChildClickHandler }: { values: string[] }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const onDropdownClickHandler = () => {
@@ -11,24 +11,30 @@ const Dropdown = () => {
   return (
     <>
       <StyledDiv onClick={onDropdownClickHandler}>
-        <div>toto</div>
+        <div>Filter by currency</div>
         <Chevron>▾</Chevron>
       </StyledDiv>
 
-      {isOpen && (
-        <Child>
-          <p>Open</p>
-        </Child>
-      )}
+      {isOpen &&
+        values.map((value) => {
+          return (
+            <Child key={value}>
+              <button onClick={() => onChildClickHandler(value)}> {value}</button>
+            </Child>
+          );
+        })}
     </>
   );
 };
 
 const StyledDiv = styled.div`
   padding: 10px;
-  background: blueviolet;
+  background: #87a2fb;
   cursor: pointer;
   display: flex;
+  max-width: 180px;
+  border-radius: 8px;
+  margin-bottom: 1rem;
 `;
 
 const Child = styled.div`
@@ -36,6 +42,7 @@ const Child = styled.div`
   scale: 0.95;
   opacity: 1;
   background: pink;
+  max-width: 100px;
 `;
 
 const Chevron = styled.div`

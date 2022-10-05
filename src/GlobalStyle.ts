@@ -5,7 +5,7 @@ export default createGlobalStyle`
     box-sizing: inherit;
     margin: 0;
     padding: 0;
-    font: inherit;
+    font-family: "roboto";
     color: inherit;
     background-color: transparent;
     border: none;

@@ -4,68 +4,77 @@ import styled from "styled-components";
 import Input from "./Input";
 import Dropdown from "./components/dropdown/dropdown";
 import NotifTable from "./components/table/NotifTable";
+import Title from "./components/typography/Title";
 import { NOTIFICATIONS_TYPES } from "./utils/data.utils";
 
 import type { Notif } from "utils/types.utils";
 
 const API = "http://localhost:5000";
 
-// type Notif = {
-//   id: number;
-//   type: string;
-//   data: AccountCreationNotifData | TransactionNotifData;
-// };
-
-// type AccountCreationNotifData = {
-//   id: number;
-//   currency: string;
-//   name: string;
-// };
-
-// type TransactionNotifData = {
-//   id: number;
-//   amount: number;
-//   from: string;
-//   to: string;
-//   unit: string;
-// };
-
 const App = () => {
   const [searchText, setSearchText] = useState("");
-  const [isLoading, setLoading] = useState(false);
+
   const [results, setResults] = useState<null | Notif[]>(null);
   const [transactionNotifications, setTransactionNotifications] = useState(null);
-
-  const { TRANSACTION_RECEIVED, TRANSACTION_SENT, ACCOUNT_CREATED } = NOTIFICATIONS_TYPES;
+  const [accountNotifications, setAccountNotifications] = useState(null);
+  const [currencies, setCurrencies] = useState([]);
 
   const onShortcutClickHandler = (type: string) => {
     switch (type) {
-      case TRANSACTION_RECEIVED:
-        setSearchText(TRANSACTION_RECEIVED);
+      case "TRANSACTION_RECEIVED":
+        setSearchText("TRANSACTION_RECEIVED");
         break;
 
-      case TRANSACTION_SENT:
-        setSearchText(TRANSACTION_SENT);
+      case "TRANSACTION_SENT":
+        setSearchText("TRANSACTION_SENT");
         break;
 
-      case ACCOUNT_CREATED:
-        setSearchText(ACCOUNT_CREATED);
+      case "ACCOUNT_CREATED":
+        setSearchText("ACCOUNT_CREATED");
+        break;
+    }
+  };
+
+  const removeDuplicates = (array: string[]): string[] =>
+    array.filter((item, index) => array.indexOf(item) === index && item);
+
+  const onCurrencyFilterClickHandler = (currency: string) => {
+    console.log("currency", currency);
+    console.log(results);
+    switch (currency) {
+      case "ETH":
+        setTransactionNotifications(
+          results.filter((transaction_notif) => transaction_notif.data.unit === "ETH"),
+        );
+        break;
+      case "XTZ":
+        setTransactionNotifications(
+          results.filter((transaction_notif) => transaction_notif.data.unit === "XTZ"),
+        );
+        break;
+      case "XRP":
+        setTransactionNotifications(
+          results.filter((transaction_notif) => transaction_notif.data.unit === "XRP"),
+        );
         break;
     }
   };
 
   useEffect(() => {
     const fetchNotifications = async () => {
-      setLoading(true);
       try {
         const res = await fetch(`${API}/search?q=${searchText}`);
         const data = await res.json();
+        setResults(data);
         setTransactionNotifications(
           data.filter(
-            (notif) => notif.type === "TRANSACTION_RECEIVED" || notif.type === "TRANSACTION_SENT",
+            (notif: Notif) =>
+              notif.type === "TRANSACTION_RECEIVED" || notif.type === "TRANSACTION_SENT",
           ),
         );
-        setLoading(false);
+        setAccountNotifications(data.filter((notif: Notif) => notif.type === "ACCOUNT_CREATED"));
+        const tempCurrencies = data.map((notif: Notif) => notif.data.unit);
+        setCurrencies(removeDuplicates(tempCurrencies));
       } catch (error) {
         console.log(error);
       }
@@ -73,40 +82,36 @@ const App = () => {
     fetchNotifications();
   }, [searchText, setResults]);
 
-  console.log(isLoading);
-
   return (
     <Container>
       <Input value={searchText} onChange={setSearchText} placeholder="Type to filter events" />
       <ButtonContainer>
-        <Button onClick={() => onShortcutClickHandler(TRANSACTION_RECEIVED)}>Received Tx</Button>
-        <Button onClick={() => onShortcutClickHandler(TRANSACTION_SENT)}>Sent Tx</Button>
-        <Button onClick={() => onShortcutClickHandler(ACCOUNT_CREATED)}>Account created</Button>
+        {NOTIFICATIONS_TYPES.map((notif_type) => {
+          return (
+            <Button onClick={() => onShortcutClickHandler(notif_type.transaction_type)}>
+              {notif_type.transaction_text}
+            </Button>
+          );
+        })}
       </ButtonContainer>
 
-      <Dropdown></Dropdown>
-      {/* {isLoading ? (
-        <Loader />
-      ) : transactionNotifications?.length > 0 ? (
-        <div>
-          {transactionNotifications.map((r) => (
-            <Item>{JSON.stringify(r)}</Item>
-          ))}
-          <NotifTable notifs={transactionNotifications}></NotifTable>
-        </div>
-      ) : (
-        <p>{"No results found :("}</p>
-      )} */}
-      {/* {transactionNotifications ? ( */}
-      <div>
-        {/* {transactionNotifications.map((r) => (
-            <Item>{JSON.stringify(r)}</Item>
-          ))} */}
+      <TitleContainer>
+        <Title mt="2" mb="1">
+          Transactions
+        </Title>
+        <Dropdown onChildClickHandler={onCurrencyFilterClickHandler} values={currencies}></Dropdown>
+
         <NotifTable notifs={transactionNotifications}></NotifTable>
-      </div>
-      {/* ) : ( */}
-      {/* <p>{"No results found :("}</p>
-      )} */}
+      </TitleContainer>
+      <AccountTableContainer>
+        <TitleContainer>
+          <Title mt="2" mb="1">
+            Account creation
+          </Title>
+
+          <NotifTable account_notif_table notifs={accountNotifications}></NotifTable>
+        </TitleContainer>
+      </AccountTableContainer>
     </Container>
   );
 };
@@ -114,7 +119,20 @@ const App = () => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+`;
+
+const AccountTableContainer = styled.div`
+  display: flex;
+
+  justify-content: flex-start;
 `;
 
 const ButtonContainer = styled.div`
