@@ -147,7 +147,7 @@ const Button = styled.button`
   border-radius: 8px;
   border-style: none;
   box-sizing: border-box;
-  color: #ffffff;
+  color: #b54040;
   cursor: pointer;
   display: inline-block;
   font-size: 14px;
