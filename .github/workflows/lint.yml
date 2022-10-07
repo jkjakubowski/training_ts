@@ -18,18 +18,10 @@ permissions:
   contents: write
 
 jobs:
-  run-linters:
-    name: Run linters
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v2
-
-      # Install your linters here
-
-      - name: Run linters
-        uses: wearerequired/lint-action@v2
-        with:
-          eslint: true
-          prettier: true
+  lint:
+    name: lint
+    uses: wearerequired/lint-action@v2
+    run: yarn lint
+    with:
+      eslint: true
+      prettier: true
