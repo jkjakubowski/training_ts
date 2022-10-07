@@ -166,7 +166,7 @@ const Button = styled.button`
 
   &:hover,
   &:focus {
-    background-color: #31d141;
+    background-color: #f082ac;
   }
 `;
 
