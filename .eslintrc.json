@@ -19,5 +19,7 @@
   "rules": {
     "react/react-in-jsx-scope": "off",
     "prettier/prettier": 0
-  }
+  },
+
+  "ignorePatterns": ["/.github"]
 }
