@@ -32,7 +32,7 @@ const NotifTable = ({
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={account_notif_table ? { minWidth: 800 } : { minWidth: 1400 }}>
+      <Table sx={{ minWidth: account_notif_table ? 800 : 1400 }}>
         {!account_notif_table && (
           <colgroup>
             <col width="20%" />
@@ -55,6 +55,7 @@ const NotifTable = ({
         <TableBody>
           {notifs ? (
             notifs.map((notif) => (
+              // narrow
               <TableRow key={notif.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                 <TableCell component="th" scope="row">
                   {getNotifType(notif.type)}

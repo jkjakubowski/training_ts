@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 
-import Input from "./Input";
+import Input from "./components/input/Input";
 import Dropdown from "./components/dropdown/dropdown";
 import NotifTable from "./components/table/NotifTable";
 import Title from "./components/typography/Title";
@@ -9,15 +9,19 @@ import { NOTIFICATIONS_TYPES } from "./utils/data.utils";
 
 import type { Notif } from "utils/types.utils";
 
-const API = "http://localhost:5000";
-
 const App = () => {
   const [searchText, setSearchText] = useState("");
 
-  const [results, setResults] = useState<null | Notif[]>(null);
+  const [transactions, setTransactions] = useState<null | Notif[]>(null);
   const [transactionNotifications, setTransactionNotifications] = useState(null);
   const [accountNotifications, setAccountNotifications] = useState(null);
   const [currencies, setCurrencies] = useState([]);
+
+  enum onShortcutType {
+    TRANSACTION_RECEIVED = "TRANSACTION_RECEIVED",
+    TRANSACTION_SENT = "TRANSACTION_SENT",
+    ACCOUNT_CREATED = "ACCOUNT_CREATED",
+  }
 
   const onShortcutClickHandler = (type: string) => {
     switch (type) {
@@ -39,22 +43,20 @@ const App = () => {
     array.filter((item, index) => array.indexOf(item) === index && item);
 
   const onCurrencyFilterClickHandler = (currency: string) => {
-    console.log("currency", currency);
-    console.log(results);
     switch (currency) {
       case "ETH":
         setTransactionNotifications(
-          results.filter((transaction_notif) => transaction_notif.data.unit === "ETH"),
+          transactions.filter((transaction_notif) => transaction_notif.data.unit === "ETH"),
         );
         break;
       case "XTZ":
         setTransactionNotifications(
-          results.filter((transaction_notif) => transaction_notif.data.unit === "XTZ"),
+          transactions.filter((transaction_notif) => transaction_notif.data.unit === "XTZ"),
         );
         break;
       case "XRP":
         setTransactionNotifications(
-          results.filter((transaction_notif) => transaction_notif.data.unit === "XRP"),
+          transactions.filter((transaction_notif) => transaction_notif.data.unit === "XRP"),
         );
         break;
     }
@@ -63,9 +65,9 @@ const App = () => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const res = await fetch(`${API}/search?q=${searchText}`);
+        const res = await fetch(`http://localhost:5000/search?q=${searchText}`);
         const data = await res.json();
-        setResults(data);
+        setTransactions(data);
         setTransactionNotifications(
           data.filter(
             (notif: Notif) =>
@@ -80,7 +82,7 @@ const App = () => {
       }
     };
     fetchNotifications();
-  }, [searchText, setResults]);
+  }, [searchText, setTransactions]);
 
   return (
     <Container>
@@ -147,7 +149,7 @@ const Button = styled.button`
   border-radius: 8px;
   border-style: none;
   box-sizing: border-box;
-  color: #b54040;
+  color: #fff;
   cursor: pointer;
   display: inline-block;
   font-size: 14px;

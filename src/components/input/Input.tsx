@@ -21,6 +21,9 @@ const StyledInput = styled.input`
   border: 1px solid hsl(0, 0%, 10%);
   border-radius: 4px;
   min-width: 250px;
+  ::-webkit-search-cancel-button:hover {
+    cursor: pointer;
+  }
 `;
 
 export default Input;
