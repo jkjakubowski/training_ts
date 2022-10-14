@@ -8,28 +8,16 @@ import Paper from "@mui/material/Paper";
 
 import SkeletonTableRow from "./SkeletonTableRow";
 
+import { getNotifType } from "../../utils/services.utils";
 import type { Notif } from "src/utils/types.utils";
 
-const NotifTable = ({
+const AccountTable = ({
   notifs,
   account_notif_table,
 }: {
   notifs: Notif[];
   account_notif_table: boolean;
 }) => {
-  const getNotifType = (type) => {
-    switch (type) {
-      case "TRANSACTION_RECEIVED":
-        return "Received";
-
-      case "TRANSACTION_SENT":
-        return "Sent";
-
-      case "ACCOUNT_CREATED":
-        return "Account creation";
-    }
-  };
-
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: account_notif_table ? 800 : 1400 }}>
@@ -60,26 +48,13 @@ const NotifTable = ({
                 <TableCell component="th" scope="row">
                   {getNotifType(notif.type)}
                 </TableCell>
-                {!account_notif_table && <TableCell>{notif.data.amount}</TableCell>}
 
-                <TableCell>{account_notif_table ? notif.data.currency : notif.data.unit}</TableCell>
-                <TableCell>{account_notif_table ? notif.data.name : notif.data.from}</TableCell>
-                {!account_notif_table && <TableCell>{notif.data.to}</TableCell>}
+                <TableCell>{notif.data.currency}</TableCell>
+                <TableCell>{notif.data.name}</TableCell>
               </TableRow>
             ))
           ) : (
-            <>
-              {!account_notif_table ? (
-                <>
-                  <SkeletonTableRow account_notif_table={account_notif_table} />
-                  <SkeletonTableRow account_notif_table={account_notif_table} />
-                  <SkeletonTableRow account_notif_table={account_notif_table} />
-                  <SkeletonTableRow account_notif_table={account_notif_table} />
-                </>
-              ) : (
-                <SkeletonTableRow account_notif_table={account_notif_table} />
-              )}
-            </>
+            <SkeletonTableRow account_notif_table={account_notif_table} />
           )}
         </TableBody>
       </Table>
@@ -87,4 +62,4 @@ const NotifTable = ({
   );
 };
 
-export default NotifTable;
+export default AccountTable;

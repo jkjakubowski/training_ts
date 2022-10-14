@@ -3,9 +3,11 @@ import styled from "styled-components";
 
 import Input from "./components/input/Input";
 import Dropdown from "./components/dropdown/dropdown";
-import NotifTable from "./components/table/NotifTable";
+import TransactionTable from "./components/table/TransactionTable";
+import AccountTable from "./components/table/AccountTable";
 import Title from "./components/typography/Title";
 import { NOTIFICATIONS_TYPES } from "./utils/data.utils";
+import { NotifType } from "./utils/services.utils";
 
 import type { Notif } from "utils/types.utils";
 
@@ -17,23 +19,17 @@ const App = () => {
   const [accountNotifications, setAccountNotifications] = useState(null);
   const [currencies, setCurrencies] = useState([]);
 
-  enum onShortcutType {
-    TRANSACTION_RECEIVED = "TRANSACTION_RECEIVED",
-    TRANSACTION_SENT = "TRANSACTION_SENT",
-    ACCOUNT_CREATED = "ACCOUNT_CREATED",
-  }
-
-  const onShortcutClickHandler = (type: string) => {
+  const onShortcutClickHandler = (type: NotifType) => {
     switch (type) {
-      case "TRANSACTION_RECEIVED":
+      case NotifType.TRANSACTION_RECEIVED:
         setSearchText("TRANSACTION_RECEIVED");
         break;
 
-      case "TRANSACTION_SENT":
+      case NotifType.TRANSACTION_SENT:
         setSearchText("TRANSACTION_SENT");
         break;
 
-      case "ACCOUNT_CREATED":
+      case NotifType.ACCOUNT_CREATED:
         setSearchText("ACCOUNT_CREATED");
         break;
     }
@@ -103,7 +99,7 @@ const App = () => {
         </Title>
         <Dropdown onChildClickHandler={onCurrencyFilterClickHandler} values={currencies}></Dropdown>
 
-        <NotifTable notifs={transactionNotifications}></NotifTable>
+        <TransactionTable notifs={transactionNotifications}></TransactionTable>
       </TitleContainer>
       <AccountTableContainer>
         <TitleContainer>
@@ -111,7 +107,7 @@ const App = () => {
             Account creation
           </Title>
 
-          <NotifTable account_notif_table notifs={accountNotifications}></NotifTable>
+          <AccountTable account_notif_table notifs={accountNotifications}></AccountTable>
         </TitleContainer>
       </AccountTableContainer>
     </Container>
