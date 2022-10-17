@@ -11,33 +11,21 @@ import SkeletonTableRow from "./SkeletonTableRow";
 import { getNotifType } from "../../utils/services.utils";
 import type { Notif } from "src/utils/types.utils";
 
-const AccountTable = ({
-  notifs,
-  account_notif_table,
-}: {
-  notifs: Notif[];
-  account_notif_table: boolean;
-}) => {
+const AccountTable = ({ notifs }: { notifs: Notif[] }) => {
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: account_notif_table ? 800 : 1400 }}>
-        {!account_notif_table && (
-          <colgroup>
-            <col width="20%" />
-            <col width="5%" />
-            <col width="5%" />
-            <col width="35%" />
-            <col width="35%" />
-          </colgroup>
-        )}
+      <Table sx={{ minWidth: 800 }}>
+        <colgroup>
+          <col width="300px" />
+          <col width="200px" />
+          <col width="300px" />
+        </colgroup>
 
         <TableHead>
           <TableRow>
             <TableCell>Type</TableCell>
-            {!account_notif_table && <TableCell>Amount</TableCell>}
             <TableCell>Currency</TableCell>
-            <TableCell>{account_notif_table ? "Name" : "From"}</TableCell>
-            {!account_notif_table && <TableCell>To</TableCell>}
+            <TableCell>Name</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -54,7 +42,7 @@ const AccountTable = ({
               </TableRow>
             ))
           ) : (
-            <SkeletonTableRow account_notif_table={account_notif_table} />
+            <SkeletonTableRow account_notif_table />
           )}
         </TableBody>
       </Table>

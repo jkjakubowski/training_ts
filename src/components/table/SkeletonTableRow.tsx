@@ -2,7 +2,7 @@ import { TableRow } from "@mui/material";
 import { TableCell } from "@mui/material";
 import { Skeleton } from "@mui/material";
 
-const SkeletonTableRow = ({ account_notif_table }) => {
+const SkeletonTableRow = ({ account_notif_table }: { account_notif_table: boolean }) => {
   return (
     <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
       <TableCell component="th" scope="row">

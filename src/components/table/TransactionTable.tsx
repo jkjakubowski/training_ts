@@ -11,33 +11,25 @@ import SkeletonTableRow from "./SkeletonTableRow";
 import { getNotifType } from "../../utils/services.utils";
 import type { Notif } from "src/utils/types.utils";
 
-const TransactionTable = ({
-  notifs,
-  account_notif_table,
-}: {
-  notifs: Notif[];
-  account_notif_table: boolean;
-}) => {
+const TransactionTable = ({ notifs }: { notifs: Notif[]; account_notif_table: boolean }) => {
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: account_notif_table ? 800 : 1400 }}>
-        {!account_notif_table && (
-          <colgroup>
-            <col width="20%" />
-            <col width="5%" />
-            <col width="5%" />
-            <col width="35%" />
-            <col width="35%" />
-          </colgroup>
-        )}
+      <Table sx={{ minWidth: 1400 }}>
+        <colgroup>
+          <col width="270px" />
+          <col width="90px" />
+          <col width="90px" />
+          <col width="475px" />
+          <col width="475px" />
+        </colgroup>
 
         <TableHead>
           <TableRow>
             <TableCell>Type</TableCell>
-            {!account_notif_table && <TableCell>Amount</TableCell>}
+            <TableCell>Amount</TableCell>
             <TableCell>Currency</TableCell>
-            <TableCell>{account_notif_table ? "Name" : "From"}</TableCell>
-            {!account_notif_table && <TableCell>To</TableCell>}
+            <TableCell>From</TableCell>
+            <TableCell>To</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -56,10 +48,10 @@ const TransactionTable = ({
             ))
           ) : (
             <>
-              <SkeletonTableRow account_notif_table={account_notif_table} />
-              <SkeletonTableRow account_notif_table={account_notif_table} />
-              <SkeletonTableRow account_notif_table={account_notif_table} />
-              <SkeletonTableRow account_notif_table={account_notif_table} />
+              <SkeletonTableRow account_notif_table />
+              <SkeletonTableRow account_notif_table />
+              <SkeletonTableRow account_notif_table />
+              <SkeletonTableRow account_notif_table />
             </>
           )}
         </TableBody>
