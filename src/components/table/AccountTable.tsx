@@ -11,7 +11,7 @@ import SkeletonTableRow from "./SkeletonTableRow";
 import { getNotifType } from "../../utils/services.utils";
 import type { Notif } from "src/utils/types.utils";
 
-const AccountTable = ({ notifs }: { notifs: Notif[] }) => {
+const AccountTable = ({ account_notifs }: { account_notifs: Notif[] }) => {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 800 }}>
@@ -29,16 +29,19 @@ const AccountTable = ({ notifs }: { notifs: Notif[] }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {notifs ? (
-            notifs.map((notif) => (
+          {account_notifs ? (
+            account_notifs.map((account_notif) => (
               // narrow
-              <TableRow key={notif.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+              <TableRow
+                key={account_notif.id}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
                 <TableCell component="th" scope="row">
-                  {getNotifType(notif.type)}
+                  {getNotifType(account_notif.type)}
                 </TableCell>
 
-                <TableCell>{notif.data.currency}</TableCell>
-                <TableCell>{notif.data.name}</TableCell>
+                <TableCell>{account_notif.data.currency}</TableCell>
+                <TableCell>{account_notif.data.name}</TableCell>
               </TableRow>
             ))
           ) : (

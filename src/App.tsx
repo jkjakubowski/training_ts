@@ -99,7 +99,7 @@ const App = () => {
         </Title>
         <Dropdown onChildClickHandler={onCurrencyFilterClickHandler} values={currencies}></Dropdown>
 
-        <TransactionTable notifs={transactionNotifications}></TransactionTable>
+        <TransactionTable transactions={transactionNotifications}></TransactionTable>
       </TitleContainer>
       <AccountTableContainer>
         <TitleContainer>
@@ -107,7 +107,7 @@ const App = () => {
             Account creation
           </Title>
 
-          <AccountTable account_notif_table notifs={accountNotifications}></AccountTable>
+          <AccountTable account_notif_table account_notifs={accountNotifications}></AccountTable>
         </TitleContainer>
       </AccountTableContainer>
     </Container>
