@@ -3,6 +3,9 @@ import styled from "styled-components";
 
 import Input from "./components/input/Input";
 import Dropdown from "./components/dropdown/dropdown";
+import Spacing from "./components/layout/Spacing";
+import Flex from "./components/layout/Flex";
+import Button from "./components/atoms/Button";
 import TransactionTable from "./components/table/TransactionTable";
 import AccountTable from "./components/table/AccountTable";
 import Title from "./components/typography/Title";
@@ -81,91 +84,39 @@ const App = () => {
   }, [searchText, setTransactions]);
 
   return (
-    <Container>
+    <Flex flex_direction="column">
       <Input value={searchText} onChange={setSearchText} placeholder="Type to filter events" />
-      <ButtonContainer>
-        {NOTIFICATIONS_TYPES.map((notif_type) => {
-          return (
-            <Button onClick={() => onShortcutClickHandler(notif_type.transaction_type)}>
-              {notif_type.transaction_text}
-            </Button>
-          );
-        })}
-      </ButtonContainer>
+      <Spacing mt={2} mp={2}>
+        <Flex row_gap={1} column_gap={1}>
+          {NOTIFICATIONS_TYPES.map((notif_type) => {
+            return (
+              <Button onClick={() => onShortcutClickHandler(notif_type.transaction_type)}>
+                {notif_type.transaction_text}
+              </Button>
+            );
+          })}
+        </Flex>
+      </Spacing>
 
-      <TitleContainer>
+      <div>
         <Title mt={2} mb={1}>
           Transactions
         </Title>
         <Dropdown onChildClickHandler={onCurrencyFilterClickHandler} values={currencies}></Dropdown>
 
         <TransactionTable transactions={transactionNotifications}></TransactionTable>
-      </TitleContainer>
-      <AccountTableContainer>
-        <TitleContainer>
+      </div>
+      <Flex justify_content="flex-start">
+        <div>
           <Title mt={2} mb={1}>
             Account creation
           </Title>
 
           <AccountTable account_notif_table account_notifs={accountNotifications}></AccountTable>
-        </TitleContainer>
-      </AccountTableContainer>
-    </Container>
+        </div>
+      </Flex>
+    </Flex>
   );
 };
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-`;
-
-const TitleContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-`;
-
-const AccountTableContainer = styled.div`
-  display: flex;
-
-  justify-content: flex-start;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  gap: 20px;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-`;
-
-const Button = styled.button`
-  background-color: #ea4c89;
-  border-radius: 8px;
-  border-style: none;
-  box-sizing: border-box;
-  color: #fff;
-  cursor: pointer;
-  display: inline-block;
-  font-size: 14px;
-  font-weight: 500;
-  height: 40px;
-  line-height: 20px;
-  list-style: none;
-  margin: 0;
-  outline: none;
-  padding: 10px 16px;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  transition: color 100ms;
-  vertical-align: baseline;
-
-  &:hover,
-  &:focus {
-    background-color: #f082ac;
-  }
-`;
 
 export default App;

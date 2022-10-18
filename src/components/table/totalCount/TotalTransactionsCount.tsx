@@ -1,4 +1,5 @@
 import Flex from "../../layout/Flex";
+import Spacing from "../../layout/Spacing";
 import TotalTableCount from "./TotalTableCount";
 
 import { NotifType } from "../../../utils/services.utils";
@@ -13,11 +14,13 @@ const TotalTransactionsCount = ({ transactions }) => {
   );
   return (
     <>
-      <Flex>
-        <TotalTableCount total_wording={"Total transactions"} transactions={transactions} />
-        <TotalTableCount total_wording={"Sent transactions"} transactions={received_tx} />
-        <TotalTableCount total_wording={"Received transactions"} transactions={sent_tx} />
-      </Flex>
+      <Spacing mt={1}>
+        <Flex justify_content="flex-start" column_gap={1}>
+          <TotalTableCount total_wording={"Total transactions"} transactions={transactions} />
+          <TotalTableCount total_wording={"Sent transactions"} transactions={received_tx} />
+          <TotalTableCount total_wording={"Received transactions"} transactions={sent_tx} />
+        </Flex>
+      </Spacing>
     </>
   );
 };

@@ -2,14 +2,14 @@ import { FC } from "react";
 import styled from "styled-components";
 
 type SpacingProps = {
-  mt: string;
-  mb: string;
-  ml: string;
-  mr: string;
-  pt: string;
-  pb: string;
-  pl: string;
-  pr: string;
+  mt?: number;
+  mb?: string;
+  ml?: number;
+  mr?: number;
+  pt?: number;
+  pb?: number;
+  pl?: number;
+  pr?: number;
 };
 
 const Spacing: FC<SpacingProps> = ({ mb, mt, ml, mr, pt, pb, pl, pr, children }) => {

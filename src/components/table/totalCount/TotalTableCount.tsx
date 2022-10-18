@@ -1,9 +1,11 @@
+import Bold from "../../typography/Bold";
+
 const TotalTableCount = ({ transactions, total_wording }) => {
   return (
     <div>
-      <p>
+      <Bold>
         {total_wording} : {transactions?.length}
-      </p>
+      </Bold>
     </div>
   );
 };

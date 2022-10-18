@@ -2,7 +2,7 @@ import { createGlobalStyle } from "styled-components";
 
 export default createGlobalStyle`
   *, *:after, *:before {
-    box-sizing: inherit;
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
     font-family: "roboto";

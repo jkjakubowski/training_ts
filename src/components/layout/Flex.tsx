@@ -2,18 +2,12 @@ import { FC } from "react";
 import styled from "styled-components";
 
 type FlexProps = {
-  align_items: string;
-  justify_content: string;
-  row_gap: number;
-  column_gap: number;
-  flex_direction: string;
-  flex_wrap: string;
-  pt: number;
-  pb: number;
-  pl: number;
-  pr: number;
-  mt: number;
-  mb: number;
+  align_items?: string;
+  justify_content?: string;
+  row_gap?: number;
+  column_gap?: number;
+  flex_direction?: string;
+  flex_wrap?: string;
 };
 
 const Flex: FC<FlexProps> = ({
@@ -23,12 +17,6 @@ const Flex: FC<FlexProps> = ({
   column_gap,
   flex_direction,
   flex_wrap,
-  pt,
-  pb,
-  pl,
-  pr,
-  mt,
-  mb,
   children,
 }) => {
   return (
@@ -39,10 +27,6 @@ const Flex: FC<FlexProps> = ({
       column_gap={column_gap}
       flex_direction={flex_direction}
       flex_wrap={flex_wrap}
-      pt={pt}
-      pb={pb}
-      pl={pl}
-      pr={pr}
     >
       {children}
     </StyledFlex>
@@ -52,18 +36,11 @@ const Flex: FC<FlexProps> = ({
 const StyledFlex = styled.div<FlexProps>`
   display: flex;
   align-items: ${({ align_items }) => (align_items ? align_items : "center")};
-  justify-content: ${({ justify_content }) => (justify_content ? justify_content : "center")};
+  justify-content: ${({ justify_content }) => (justify_content ? justify_content : "flex-start")};
   row-gap: ${({ row_gap }) => (row_gap ? `${row_gap}rem` : "0")};
   column-gap: ${({ column_gap }) => (column_gap ? `${column_gap}rem` : "0")};
-  flex-direction: ${({ justify_content }) => (justify_content ? justify_content : "center")};
-
+  flex-direction: ${({ flex_direction }) => (flex_direction ? flex_direction : "row")};
   flex-wrap: ${({ flex_wrap }) => (flex_wrap ? flex_wrap : "nowrap")};
-  padding-top: ${({ pt }) => (pt ? `${pt}rem` : "0")};
-  padding-bottom: ${({ pb }) => (pb ? `${pb}rem` : "0")};
-  padding-left: ${({ pl }) => (pl ? `${pl}rem` : "0")};
-  padding-right: ${({ pr }) => (pr ? `${pr}rem` : "0")};
-  margin-top: ${({ mt }) => (mt ? `${mt}rem` : "0")};
-  margin-bottom: ${({ mb }) => (mb ? `${mb}rem` : "0")};
 `;
 
 export default Flex;
