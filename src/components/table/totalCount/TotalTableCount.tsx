@@ -1,7 +1,9 @@
-const TotalTableCount = ({ transactions }) => {
+const TotalTableCount = ({ transactions, total_wording }) => {
   return (
     <div>
-      <p>Total: {transactions?.length}</p>
+      <p>
+        {total_wording} : {transactions?.length}
+      </p>
     </div>
   );
 };
