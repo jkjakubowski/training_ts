@@ -94,7 +94,7 @@ const App = () => {
       </ButtonContainer>
 
       <TitleContainer>
-        <Title mt="2" mb="1">
+        <Title mt={2} mb={1}>
           Transactions
         </Title>
         <Dropdown onChildClickHandler={onCurrencyFilterClickHandler} values={currencies}></Dropdown>
@@ -103,7 +103,7 @@ const App = () => {
       </TitleContainer>
       <AccountTableContainer>
         <TitleContainer>
-          <Title mt="2" mb="1">
+          <Title mt={2} mb={1}>
             Account creation
           </Title>
 

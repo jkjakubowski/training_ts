@@ -2,8 +2,8 @@ import { FC } from "react";
 import styled from "styled-components";
 
 type TitleProps = {
-  mt: string;
-  mb: string;
+  mt: number;
+  mb: number;
 };
 
 const Title: FC<TitleProps> = ({ mb, mt, children }) => {
