@@ -1,3 +1,4 @@
+import Flex from "../../layout/Flex";
 import TotalTableCount from "./TotalTableCount";
 
 import { NotifType } from "../../../utils/services.utils";
@@ -12,9 +13,11 @@ const TotalTransactionsCount = ({ transactions }) => {
   );
   return (
     <>
-      <TotalTableCount total_wording={"Total transactions"} transactions={transactions} />
-      <TotalTableCount total_wording={"Sent transactions"} transactions={received_tx} />
-      <TotalTableCount total_wording={"Received transactions"} transactions={sent_tx} />
+      <Flex>
+        <TotalTableCount total_wording={"Total transactions"} transactions={transactions} />
+        <TotalTableCount total_wording={"Sent transactions"} transactions={received_tx} />
+        <TotalTableCount total_wording={"Received transactions"} transactions={sent_tx} />
+      </Flex>
     </>
   );
 };
