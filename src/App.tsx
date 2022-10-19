@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import styled from "styled-components";
 
 import Input from "./components/input/Input";
 import Dropdown from "./components/dropdown/dropdown";
@@ -17,9 +16,10 @@ import type { Notif } from "utils/types.utils";
 const App = () => {
   const [searchText, setSearchText] = useState("");
 
-  const [transactions, setTransactions] = useState<null | Notif[]>(null);
-  const [transactionNotifications, setTransactionNotifications] = useState(null);
-  const [accountNotifications, setAccountNotifications] = useState(null);
+  const [notifications, setNotifications] = useState<null | {
+    transactions: Notif[];
+    account_notifications: Notif[];
+  }>(null);
   const [currencies, setCurrencies] = useState([]);
 
   const onShortcutClickHandler = (type: NotifType) => {
@@ -42,20 +42,21 @@ const App = () => {
     array.filter((item, index) => array.indexOf(item) === index && item);
 
   const onCurrencyFilterClickHandler = (currency: string) => {
+    const { transactions } = notifications;
     switch (currency) {
       case "ETH":
         setTransactionNotifications(
-          transactions.filter((transaction_notif) => transaction_notif.data.unit === "ETH"),
+          transactions?.filter((transaction_notif) => transaction_notif.data.unit === "ETH"),
         );
         break;
       case "XTZ":
         setTransactionNotifications(
-          transactions.filter((transaction_notif) => transaction_notif.data.unit === "XTZ"),
+          transactions?.filter((transaction_notif) => transaction_notif.data.unit === "XTZ"),
         );
         break;
       case "XRP":
         setTransactionNotifications(
-          transactions.filter((transaction_notif) => transaction_notif.data.unit === "XRP"),
+          transactions?.filter((transaction_notif) => transaction_notif.data.unit === "XRP"),
         );
         break;
     }
@@ -66,14 +67,13 @@ const App = () => {
       try {
         const res = await fetch(`http://localhost:5000/search?q=${searchText}`);
         const data = await res.json();
-        setTransactions(data);
-        setTransactionNotifications(
-          data.filter(
+        setNotifications({
+          transactions: data.filter(
             (notif: Notif) =>
               notif.type === "TRANSACTION_RECEIVED" || notif.type === "TRANSACTION_SENT",
           ),
-        );
-        setAccountNotifications(data.filter((notif: Notif) => notif.type === "ACCOUNT_CREATED"));
+          account_notifications: data.filter((notif: Notif) => notif.type === "ACCOUNT_CREATED"),
+        });
         const tempCurrencies = data.map((notif: Notif) => notif.data.unit);
         setCurrencies(removeDuplicates(tempCurrencies));
       } catch (error) {
@@ -81,7 +81,7 @@ const App = () => {
       }
     };
     fetchNotifications();
-  }, [searchText, setTransactions]);
+  }, [searchText, setNotifications]);
 
   return (
     <Flex flex_direction="column">
@@ -102,9 +102,9 @@ const App = () => {
         <Title mt={2} mb={1}>
           Transactions
         </Title>
-        <Dropdown onChildClickHandler={onCurrencyFilterClickHandler} values={currencies}></Dropdown>
+        <Dropdown onChildClickHandler={onCurrencyFilterClickHandler} values={currencies} />
 
-        <TransactionTable transactions={transactionNotifications}></TransactionTable>
+        <TransactionTable transactions={notifications?.transactions} />
       </div>
       <Flex justify_content="flex-start">
         <div>
@@ -112,7 +112,7 @@ const App = () => {
             Account creation
           </Title>
 
-          <AccountTable account_notif_table account_notifs={accountNotifications}></AccountTable>
+          <AccountTable account_notif_table account_notifs={notifications?.account_notifications} />
         </div>
       </Flex>
     </Flex>
