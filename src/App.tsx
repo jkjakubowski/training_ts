@@ -15,9 +15,9 @@ import type { Notif } from "utils/types.utils";
 
 const App = () => {
   const [searchText, setSearchText] = useState("");
-
   const [notifications, setNotifications] = useState<null | {
     transactions: Notif[];
+    filtered_transactions: Notif[];
     account_notifications: Notif[];
   }>(null);
   const [currencies, setCurrencies] = useState([]);
@@ -42,24 +42,13 @@ const App = () => {
     array.filter((item, index) => array.indexOf(item) === index && item);
 
   const onCurrencyFilterClickHandler = (currency: string) => {
-    const { transactions } = notifications;
-    switch (currency) {
-      case "ETH":
-        setTransactionNotifications(
-          transactions?.filter((transaction_notif) => transaction_notif.data.unit === "ETH"),
-        );
-        break;
-      case "XTZ":
-        setTransactionNotifications(
-          transactions?.filter((transaction_notif) => transaction_notif.data.unit === "XTZ"),
-        );
-        break;
-      case "XRP":
-        setTransactionNotifications(
-          transactions?.filter((transaction_notif) => transaction_notif.data.unit === "XRP"),
-        );
-        break;
-    }
+    const { transactions }: { transactions: Notif[] } = notifications;
+
+    const filtered_transactions = transactions?.filter(
+      (transaction_notif) => transaction_notif.data.unit === currency,
+    );
+
+    setNotifications({ ...notifications, filtered_transactions: filtered_transactions });
   };
 
   useEffect(() => {
@@ -67,11 +56,13 @@ const App = () => {
       try {
         const res = await fetch(`http://localhost:5000/search?q=${searchText}`);
         const data = await res.json();
+        const all_transactions = data.filter(
+          (notif: Notif) =>
+            notif.type === "TRANSACTION_RECEIVED" || notif.type === "TRANSACTION_SENT",
+        );
         setNotifications({
-          transactions: data.filter(
-            (notif: Notif) =>
-              notif.type === "TRANSACTION_RECEIVED" || notif.type === "TRANSACTION_SENT",
-          ),
+          transactions: all_transactions,
+          filtered_transactions: all_transactions,
           account_notifications: data.filter((notif: Notif) => notif.type === "ACCOUNT_CREATED"),
         });
         const tempCurrencies = data.map((notif: Notif) => notif.data.unit);
@@ -104,7 +95,7 @@ const App = () => {
         </Title>
         <Dropdown onChildClickHandler={onCurrencyFilterClickHandler} values={currencies} />
 
-        <TransactionTable transactions={notifications?.transactions} />
+        <TransactionTable transactions={notifications?.filtered_transactions} />
       </div>
       <Flex justify_content="flex-start">
         <div>
